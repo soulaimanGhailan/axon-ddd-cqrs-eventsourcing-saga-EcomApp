@@ -1,4 +1,4 @@
-package soul.dev.productservice.command.events;
+package soul.dev.productservice.common.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -12,12 +12,12 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping("/api/v1/products")
-public class ProductRestController {
+@RequestMapping("/api/command/v1/products")
+public class ProductCommandRestController {
 
     private CommandGateway commandGateway;
 
-    public ProductRestController(CommandGateway commandGateway) {
+    public ProductCommandRestController(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
     }
 

@@ -7,7 +7,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import soul.dev.productservice.command.commands.CreateProductCommand;
-import soul.dev.productservice.command.events.ProductCreatedEvent;
+import soul.dev.productservice.common.events.ProductCreatedEvent;
 
 @Aggregate
 @NoArgsConstructor
@@ -24,6 +24,7 @@ public class ProductAggregate {
         ProductCreatedEvent event = ProductCreatedEvent.builder()
                 .id(command.getId())
                 .price(command.getPrice())
+                .title(command.getTitle())
                 .quantity(command.getQuantity()).build();
         AggregateLifecycle.apply(event) ;
     }
