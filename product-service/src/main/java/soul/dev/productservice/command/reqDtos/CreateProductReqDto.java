@@ -10,7 +10,7 @@ import lombok.Data;
 public class CreateProductReqDto {
     @NotBlank(message = "title can not be empty ")
     private String title ;
-    @Min(value = 1 , message = "price can not be nor 0 nor negative")
+//    @Min(value = 1 , message = "price can not be nor 0 nor negative")
     private int price ;
     @Min(value = 0 , message = "price can not be negative")
     @Max(value = 10 , message = "quantity can not be greater than 10 ")

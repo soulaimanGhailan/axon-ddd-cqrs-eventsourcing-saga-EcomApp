@@ -20,7 +20,7 @@ public class ProductAggregate {
 
     @CommandHandler
     public ProductAggregate(CreateProductCommand command) {
-        if(command.getPrice() < 0) throw new RuntimeException("Price cannot be negative");
+
         ProductCreatedEvent event = ProductCreatedEvent.builder()
                 .id(command.getId())
                 .price(command.getPrice())
