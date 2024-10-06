@@ -1,5 +1,6 @@
 package soul.dev.productservice.command.controllers;
 
+import jakarta.validation.Valid;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ public class ProductCommandRestController {
     }
 
     @PostMapping
-    public CompletableFuture<String> create(@RequestBody CreateProductReqDto reqDto) {
+    public CompletableFuture<String> create(@Valid @RequestBody CreateProductReqDto reqDto) {
         CreateProductCommand command = CreateProductCommand.builder()
                 .id(UUID.randomUUID().toString())
                 .price(reqDto.getPrice())
