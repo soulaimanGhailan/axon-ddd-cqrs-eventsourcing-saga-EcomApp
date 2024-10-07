@@ -1,5 +1,6 @@
 package soul.dev.productservice.query.eventHandlers;
 
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import soul.dev.productservice.query.entities.Product;
 import soul.dev.productservice.query.repos.ProductRepo;
 
 @Component
+@ProcessingGroup("product-group")
 public class ProductEventsHandler {
     private ProductRepo productRepo ;
 

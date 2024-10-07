@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import soul.dev.productservice.command.commands.CommandInterceptors.CreateProductCommandInterceptor;
+import soul.dev.productservice.command.CommandInterceptors.CreateProductCommandInterceptor;
 
 @SpringBootApplication
 public class ProductServiceApplication {
