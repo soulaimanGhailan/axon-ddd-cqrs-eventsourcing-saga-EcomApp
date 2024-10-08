@@ -2,6 +2,7 @@ package soul.dev.productservice.query.eventHandlers;
 
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import soul.dev.productservice.common.events.ProductCreatedEvent;
@@ -15,6 +16,11 @@ public class ProductEventsHandler {
 
     public ProductEventsHandler(ProductRepo productRepo) {
         this.productRepo = productRepo;
+    }
+
+    @ExceptionHandler(resultType = IllegalArgumentException.class)
+    public void handleException(IllegalArgumentException exception) throws Exception {
+        throw exception;
     }
 
     @EventHandler
