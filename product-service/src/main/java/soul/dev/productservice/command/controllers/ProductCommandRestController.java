@@ -31,4 +31,6 @@ public class ProductCommandRestController {
                 .quantity(reqDto.getQuantity()).build();
         return commandGateway.send(command);
     }
+
+
 }

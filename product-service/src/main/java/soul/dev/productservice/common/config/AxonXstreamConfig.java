@@ -1,4 +1,4 @@
-package soul.dev.orderservice.common.config;
+package soul.dev.productservice.common.config;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;

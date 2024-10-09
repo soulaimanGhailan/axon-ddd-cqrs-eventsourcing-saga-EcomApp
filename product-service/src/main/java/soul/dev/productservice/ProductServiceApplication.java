@@ -1,16 +1,18 @@
 package soul.dev.productservice;
 
 import org.axonframework.commandhandling.CommandBus;
-import org.axonframework.config.EventProcessingConfiguration;
 import org.axonframework.config.EventProcessingConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 import soul.dev.productservice.command.CommandInterceptors.CreateProductCommandInterceptor;
 import soul.dev.productservice.common.errorHandlers.ProductEventErrorHandler;
+import soul.dev.productservice.common.config.AxonXstreamConfig;
 
 @SpringBootApplication
+@Import({ AxonXstreamConfig.class })
 public class ProductServiceApplication {
 
     public static void main(String[] args) {
