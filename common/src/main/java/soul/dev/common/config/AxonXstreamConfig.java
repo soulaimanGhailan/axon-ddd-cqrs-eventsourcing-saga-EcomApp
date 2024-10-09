@@ -1,10 +1,11 @@
-package soul.dev.productservice.common.config;
+package soul.dev.common.config;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/** for serialisation problem in axon **/
 @Configuration
 public class AxonXstreamConfig {
 

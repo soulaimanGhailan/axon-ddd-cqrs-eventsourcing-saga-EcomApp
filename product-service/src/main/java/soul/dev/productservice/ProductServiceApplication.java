@@ -7,9 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import soul.dev.common.config.AxonXstreamConfig;
 import soul.dev.productservice.command.CommandInterceptors.CreateProductCommandInterceptor;
 import soul.dev.productservice.common.errorHandlers.ProductEventErrorHandler;
-import soul.dev.productservice.common.config.AxonXstreamConfig;
 
 @SpringBootApplication
 @Import({ AxonXstreamConfig.class })
