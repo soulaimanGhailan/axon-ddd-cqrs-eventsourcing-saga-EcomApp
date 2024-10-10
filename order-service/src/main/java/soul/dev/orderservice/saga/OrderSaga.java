@@ -4,6 +4,7 @@ package soul.dev.orderservice.saga;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
@@ -15,6 +16,8 @@ import soul.dev.common.events.PaymentProcessedEvent;
 import soul.dev.common.events.ProductReservedEvent;
 import soul.dev.common.model.User;
 import soul.dev.common.queries.FetchUserPaymentDetailsQuery;
+import soul.dev.orderservice.command.commands.ApproveOrderCommand;
+import soul.dev.orderservice.common.events.OrderApprovedEvent;
 import soul.dev.orderservice.common.events.OrderCreatedEvent;
 
 import java.util.UUID;
@@ -40,7 +43,7 @@ public class OrderSaga {
                 productId(event.getProductId())
                 .userId(event.getUserId())
                 .quantity(event.getQuantity()).build();
-        log.info("orderCreatedEvent for orderId : {} , productId {} ", event.getOrderId() , event.getProductId());
+        log.info("Order saga -----> orderCreatedEvent for orderId : {} , productId {} ", event.getOrderId() , event.getProductId());
         commandGateway.send(reserveProductCommand , (commandMessage, commandResultMessage) -> {
             if(commandResultMessage.isExceptional()){
                 // rollback
@@ -52,7 +55,7 @@ public class OrderSaga {
     public void handle(ProductReservedEvent event){
 
         /** get user payment details */
-        log.info("productReservedEvent for orderId : {} ", event.getOrderId());
+        log.info("Order saga -----> productReservedEvent for orderId : {} ", event.getOrderId());
         FetchUserPaymentDetailsQuery query = FetchUserPaymentDetailsQuery.builder()
                 .userId(event.getUserId()).build();
         User userPaymentDetails = null ;
@@ -68,7 +71,7 @@ public class OrderSaga {
 
             /** process payment **/
             System.out.println(userPaymentDetails);
-            log.info("payment details for user {} is fetched successfully", event.getUserId());
+            log.info("Order saga -----> payment details for user {} is fetched successfully", event.getUserId());
             ProcessPaymentCommand command = ProcessPaymentCommand.builder()
                     .orderId(event.getOrderId())
                     .paymentId(UUID.randomUUID().toString())
@@ -83,6 +86,14 @@ public class OrderSaga {
     }
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent event){
-        log.info("paymentProcessedEvent for orderId : {} ", event.getOrderId());
+        log.info("Order saga -----> paymentProcessedEvent for orderId : {} ", event.getOrderId());
+        commandGateway.send(new ApproveOrderCommand(event.getOrderId()));
+    }
+
+    /** saga happy path **/
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(OrderApprovedEvent event){
+        log.info("Order saga -----> order saga has ended happily for orderId : {} ", event.getOrderId());
     }
 }
