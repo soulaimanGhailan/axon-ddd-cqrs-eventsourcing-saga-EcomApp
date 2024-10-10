@@ -25,7 +25,7 @@ public class UserEventsHandler {
                 .userId(query.getUserId())
                 .paymentDetails(paymentDetails)
                 .build();
-
+        System.out.println(user);
         return user;
     }
     
