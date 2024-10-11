@@ -8,9 +8,11 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 import soul.dev.orderservice.command.commands.ApproveOrderCommand;
 import soul.dev.orderservice.command.commands.CreateOrderCommand;
+import soul.dev.orderservice.command.commands.RejectOrderCommand;
 import soul.dev.orderservice.common.enums.OrderStatus;
 import soul.dev.orderservice.common.events.OrderApprovedEvent;
 import soul.dev.orderservice.common.events.OrderCreatedEvent;
+import soul.dev.orderservice.common.events.OrderRejectedEvent;
 
 @Aggregate
 public class OrderAggregate {
@@ -52,6 +54,15 @@ public class OrderAggregate {
     @EventSourcingHandler
     public void on(OrderApprovedEvent event){
         this.orderStatus = OrderStatus.APPROVED;
+    }
+
+    @CommandHandler
+    public void handle(RejectOrderCommand command) {
+        OrderRejectedEvent event = OrderRejectedEvent.builder()
+                .orderId(command.getOrderId())
+                .reason(command.getReason())
+                .status(OrderStatus.REJECTED).build();
+        AggregateLifecycle.apply(event);
     }
 
 

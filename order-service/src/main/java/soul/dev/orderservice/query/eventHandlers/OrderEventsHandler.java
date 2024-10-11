@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import soul.dev.orderservice.common.enums.OrderStatus;
 import soul.dev.orderservice.common.events.OrderApprovedEvent;
 import soul.dev.orderservice.common.events.OrderCreatedEvent;
+import soul.dev.orderservice.common.events.OrderRejectedEvent;
 import soul.dev.orderservice.query.entities.OrderEntity;
 import soul.dev.orderservice.query.repos.OrdersRepo;
 
@@ -32,12 +33,19 @@ public class OrderEventsHandler {
     @EventHandler
     public void on(OrderApprovedEvent event) throws Exception {
         OrderEntity order = this.ordersRepo.findById(event.getOrderId()).orElse(null);
-        System.out.println(order);
         if(order == null){
             // need to do something
             return;
         }
         order.setOrderStatus(OrderStatus.APPROVED);
+        this.ordersRepo.save(order);
+    }
+
+    @EventHandler
+    public void on(OrderRejectedEvent event) throws Exception {
+        OrderEntity order = this.ordersRepo.findById(event.getOrderId()).orElse(null);
+        if(order == null){return;}
+        order.setOrderStatus(OrderStatus.REJECTED);
         this.ordersRepo.save(order);
     }
     

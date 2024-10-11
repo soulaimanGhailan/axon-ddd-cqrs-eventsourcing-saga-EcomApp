@@ -5,7 +5,9 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import soul.dev.common.commands.CancelProductReservationCommand;
 import soul.dev.common.commands.ReserveProductCommand;
+import soul.dev.common.events.ProductReservationCanceledEvent;
 import soul.dev.common.events.ProductReservedEvent;
 import soul.dev.productservice.command.commands.CreateProductCommand;
 import soul.dev.productservice.common.events.ProductCreatedEvent;
@@ -44,6 +46,16 @@ public class ProductAggregate {
                 .quantity(command.getQuantity()).build();
         AggregateLifecycle.apply(event) ;
     }
+    @CommandHandler
+    public void handle(CancelProductReservationCommand command){
+        ProductReservationCanceledEvent event = ProductReservationCanceledEvent.builder()
+                .productId(command.getProductId())
+                .orderId(command.getOrderId())
+                .userId(command.getUserId())
+                .quantity(command.getQuantity())
+                .reason(command.getReason()).build();
+        AggregateLifecycle.apply(event) ;
+    }
 
 
     @EventSourcingHandler
@@ -57,8 +69,12 @@ public class ProductAggregate {
 
     @EventSourcingHandler
     public void on(ProductReservedEvent event){
-        System.out.println(this);
         this.quantity = this.quantity - event.getQuantity() ;
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservationCanceledEvent event){
+        this.quantity = this.quantity + event.getQuantity() ;
     }
 
     @Override

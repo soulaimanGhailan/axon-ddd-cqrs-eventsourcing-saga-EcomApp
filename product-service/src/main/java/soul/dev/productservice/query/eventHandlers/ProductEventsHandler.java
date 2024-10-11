@@ -6,6 +6,7 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import soul.dev.common.events.ProductReservationCanceledEvent;
 import soul.dev.common.events.ProductReservedEvent;
 import soul.dev.productservice.common.events.ProductCreatedEvent;
 import soul.dev.productservice.query.entities.Product;
@@ -43,6 +44,14 @@ public class ProductEventsHandler {
         log.info("Reserved product: {}", event.getProductId());
         Product product = productRepo.findById(event.getProductId()).orElse(null);
         product.setQuantity(product.getQuantity() - event.getQuantity());
+        productRepo.save(product);
+    }
+
+    @EventHandler
+    public void handle(ProductReservationCanceledEvent event){
+        Product product = productRepo.findById(event.getProductId()).orElse(null);
+        if(product == null) return;
+        product.setQuantity(product.getQuantity() + event.getQuantity());
         productRepo.save(product);
     }
 
