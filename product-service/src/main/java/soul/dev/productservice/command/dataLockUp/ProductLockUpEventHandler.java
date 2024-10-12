@@ -2,6 +2,7 @@ package soul.dev.productservice.command.dataLockUp;
 
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.springframework.stereotype.Component;
 import soul.dev.productservice.command.dataLockUp.entites.ProductLockupEntity;
 import soul.dev.productservice.command.dataLockUp.repos.ProductLockUpRepo;
@@ -21,5 +22,10 @@ public class ProductLockUpEventHandler {
                 .productId(event.getId())
                 .productTitle(event.getTitle()).build();
         productLockUpRepo.save(productLockup) ;
+    }
+    /** will be executed when an event replay transaction will take place **/
+    @ResetHandler
+    public void reset(){
+        productLockUpRepo.deleteAll();
     }
 }

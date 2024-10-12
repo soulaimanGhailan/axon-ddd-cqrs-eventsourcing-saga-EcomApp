@@ -3,6 +3,7 @@ package soul.dev.productservice.query.eventHandlers;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,12 @@ public class ProductEventsHandler {
         if(product == null) return;
         product.setQuantity(product.getQuantity() + event.getQuantity());
         productRepo.save(product);
+    }
+
+    /** will be executed when an event replay transaction will take place **/
+    @ResetHandler
+    public void reset(){
+        productRepo.deleteAll();
     }
 
 }
