@@ -2,10 +2,14 @@ package soul.dev.productservice;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
+import org.axonframework.eventsourcing.EventCountSnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.SnapshotTriggerDefinition;
+import org.axonframework.eventsourcing.Snapshotter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import soul.dev.common.config.AxonXstreamConfig;
 import soul.dev.productservice.command.CommandInterceptors.CreateProductCommandInterceptor;
@@ -30,6 +34,11 @@ public class ProductServiceApplication {
     public void configure(EventProcessingConfigurer eventProcessingConfigurer){
         eventProcessingConfigurer.registerListenerInvocationErrorHandler("product-group" , configuration ->
             new ProductEventErrorHandler()) ;
+    }
+
+    @Bean(name = "productSnapshotDefinition")
+    public SnapshotTriggerDefinition snapshotTriggerDefinition(Snapshotter snapshotter){
+        return new EventCountSnapshotTriggerDefinition(snapshotter , 5) ;
     }
 
 }

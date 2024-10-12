@@ -2,6 +2,7 @@ package soul.dev.orderservice.saga;
 
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.deadline.DeadlineManager;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -32,6 +33,8 @@ public class OrderSaga {
     private transient CommandGateway commandGateway;
     @Autowired
     private transient QueryGateway queryGateway;
+    @Autowired
+    private transient DeadlineManager deadlineManager ;
 
 
     public OrderSaga() {

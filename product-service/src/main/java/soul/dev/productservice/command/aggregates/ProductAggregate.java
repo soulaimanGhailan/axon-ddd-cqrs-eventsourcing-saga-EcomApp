@@ -12,7 +12,7 @@ import soul.dev.common.events.ProductReservedEvent;
 import soul.dev.productservice.command.commands.CreateProductCommand;
 import soul.dev.productservice.common.events.ProductCreatedEvent;
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "productSnapshotDefinition")
 @NoArgsConstructor
 public class ProductAggregate {
     @AggregateIdentifier
